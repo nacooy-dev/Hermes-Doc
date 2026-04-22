@@ -29,8 +29,6 @@ npm-debug.log
 yarn-error.log
 
 # Hermes & AI Configs (敏感信息，勿上传)
-# 注意：.opencode/, .claude.json 等配置文件通常包含 API Key，建议本地保留，Git 忽略
-# 如果必须分享配置模板，请确保删除敏感信息
 .opencode/config.yaml
 .claude.json
 .qwen/settings.json
@@ -49,9 +47,8 @@ Thumbs.db
 .idea/
 *.iml
 
-# Wiki Raw Data (可选：如果包含敏感数据)
-# wiki/raw/articles/
-# wiki/raw/papers/
+# Blog Drafts (未完成稿件，不公开)
+blog-post-draft.md
 
 # Temporary
 tmp/

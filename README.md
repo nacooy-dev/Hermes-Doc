@@ -146,9 +146,8 @@ Hermes-Doc/
 
 ## 📬 联系方式
 
-- 博客：[您的博客链接]
-- Twitter/X: [@您的账号]
-- GitHub Issues: [提问题/建议](https://github.com/您的用户名/Hermes-Doc/issues)
+- 邮箱：nacoolaby@2925.com
+- GitHub Issues: [提问题/建议](https://github.com/nacooy-dev/Hermes-Doc/issues)
 
 ---
 

@@ -143,8 +143,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 📬 Contact
 
-- Blog: [Your Blog Link]
-- Twitter/X: [@YourHandle]
+- Email: nacoolaby@2925.com
 - GitHub Issues: [Open an issue](https://github.com/nacooy-dev/Hermes-Doc/issues)
 
 ---
