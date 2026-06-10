@@ -6,35 +6,19 @@
 
 ## 核心理念
 
-LLM Wiki 是一个**累积式知识库**——知识只编译一次，后续查询直接查。
-Wiki 的内容已经过整理、交叉引用、矛盾标记。
+Wiki 是**累积式知识库**——知识只整理一次，后续查询直接查。
+Blog 是**工作记录**——有价值的思考和成果，存下来形成上下文。
 
-**你（Agent）负责**：总结、交叉引用、写入、维护一致性。  
-**人类负责**：提供素材、指出方向。
+**博客命名格式**：`{日期}-{项目}-{主题}.md`
+例如：`20260505-ai-colleague-browser-auto-方案设计.md`
 
----
-
-## 目录结构
-
-```
-wiki/
-├── SCHEMA.md           # 规范：结构、约定、标签体系
-├── index.md            # 内容目录：一句话概要
-├── log.md              # 操作日志：按时间记录所有行为
-├── raw/                # 原始素材（不可修改）
-│   ├── articles/       # 网页文章
-│   └── papers/         # 论文
-├── entities/           # 实体页面（人物、公司、产品）
-├── concepts/           # 概念页面（主题、技术）
-├── comparisons/        # 对比分析
-└── queries/           # 有价值的查询结果
-```
+**博客与 Wiki 的区别**：
+- Wiki = 结构化沉淀（entity、concept、comparison）
+- Blog = 工作记录（调研、方案、复盘、思考）
 
 ---
 
-## 关键规则
-
-### 每次操作前必读（Orient）
+## Orient（每次操作前必读）
 
 **每次需要读取记忆时，必须先读取这三个文件：**
 
@@ -42,122 +26,101 @@ wiki/
 2. **index.md** — 了解已有哪些页面
 3. **log.md** — 了解最近做过什么
 
-```python
-# 伪代码
-read_file("wiki/SCHEMA.md")
-read_file("wiki/index.md")
-read_file("wiki/log.md", offset=-30)  # 最近30条
+跳过 orient 会导致重复创建、错过交叉引用、违背规范。
+
+---
+
+## 博客格式
+
+```yaml
+---
+title: browser-harness 集成调研
+created: 2026-05-02
+project: ai-colleague
+project_phase: research
+status: completed
+archived: false
+blog_origin: 验证 browser-harness 作为浏览器自动化方案的可行性
+sources:                     # 标注来源
+  - 原始会话/sessions/xxx.md
+  - https://github.com/xxx
+confidence: high             # high/medium/low
+summary: |
+  3-5句话，涵盖背景、关键发现、结论
+tags: [ai-colleague, browser]
+related_blogs:               # 至少2个关联博客
+  - 20260505-ai-colleague-xxx.md
+  - 20260501-hermes-xxx.md
+---
 ```
 
-**跳过 orient 会导致**：重复创建页面、错过交叉引用、违背规范。
+### 字段说明
 
-### 页面格式（Frontmatter）
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `title` | ✅ | 标题 |
+| `created` | ✅ | 创建日期 YYYY-MM-DD |
+| `project` | ✅ | 项目名 |
+| `project_phase` | ✅ | research/design/development/testing/optimization/completed |
+| `status` | ✅ | active/completed/paused |
+| `archived` | ✅ | true/false |
+| `blog_origin` | ✅ | 一句话说明写这篇的原因 |
+| `sources` | ✅ | 来源标注 |
+| `confidence` | ✅ | high/medium/low |
+| `summary` | ✅ | 3-5句话 |
+| `tags` | ✅ | 标签（必须来自 SCHEMA.md taxonomy） |
+| `related_blogs` | ✅ | 至少2个关联博客 slug |
+| `updated` | ❌ | 最后更新日期 |
 
-每个 wiki 页面开头必须有 YAML 头：
+---
+
+## Wiki 页面格式
 
 ```yaml
 ---
 title: 页面标题
 created: 2026-04-22
 updated: 2026-04-22
-type: entity | concept | comparison | query
-tags: [标签1, 标签2]
-sources: [raw/articles/源文件.md]
----
-```
-
-### 交叉引用
-
-用 `[[wikilinks]]` 链接其他页面。每个页面至少链接 2 个其他页面。
-
-### 页面阈值
-
-- **创建页面**：一个实体/概念在 2+ 个素材中出现，或在一个核心素材中占主导
-- **不创建**：仅一次提及、minor 细节
-
+type: entity|concept|comparison|query
+tags: [from taxonomy]
+confidence: high|medium|low
+sources: [来源]
 ---
 
-## 对接 Memory
+正文内容...
 
-LLM Wiki 可以作为 Hermes 的长期记忆系统使用。
+交叉引用：[[other-page]] 至少2个
 
-### 工作方式
-
-1. **写入记忆** → 作为新 entity 或 concept 写入 wiki
-2. **读取记忆** → 先查 index.md，再用 `search_files` 精确搜索
-3. **查询记忆** → 从 wiki 中合成答案，标明来源
-
-### Memory 工具 vs Wiki
-
-| | Memory 工具 | Wiki |
-|---|---|---|
-| 格式 | 扁平笔记 | 互联页面 + frontmatter |
-| 查找 | 关键词检索 | 索引 + 搜索 + 交叉引用 |
-| 一致性 | 不检查 | lint 检查重复/矛盾 |
-| 累积 | 线性增长 | 有结构、可视化 |
-
-### 使用场景
-
-- **用户偏好** → 写入 `entities/user-[name].md`，包含标签、偏好、习惯
-- **环境信息** → 写入 `entities/macos-setup.md`，记录 Python 版本、路径
-- **项目规范** → 写入 `concepts/hermes-conventions.md`
-- **API 知识** → 写入 `entities/openai-api.md`，包含端点、使用方式
-- **代码片段** → 写入 `concepts/python-patterns.md`
-
----
-
-## 核心操作
-
-### 1. Ingest（写入素材）
-
-```
-1. 保存原始素材到 raw/
-2. 提取实体/概念
-3. 创建或更新 wiki 页面
-4. 添加交叉引用（至少2个）
-5. 更新 index.md
-6. 追加 log.md
-```
-
-### 2. Query（查询）
-
-```
-1. 读取 index.md 定位相关页面
-2. search_files 精确搜索（可选）
-3. 读取相关页面
-4. 合成答案，标明来源
-5. 有价值的答案写入 queries/ 保留
-```
-
-### 3. Lint（检查一致性）
-
-```
-- 孤立页面（无 inbound 链接）
-- 失效链接（指��不存在的页面）
-- 矛盾内容（同一主题不同说法）
-- 过期内容（90天未更新）
-- 标签合规性
+来源追溯：段落末尾加 ^[raw/articles/source.md]
 ```
 
 ---
 
-## 快速开始
+## 归档规则
 
-**Wiki 路径**：`/Users/lvyun/TianCe-Lab/Hermes-Doc/wiki`
+- **90天无更新** → 标记 `archived: true`
+- 归档不是删除，召回时搜得到
+- 归档内容**不主动出现在上下文**中（除非被问及）
+
+---
+
+## 定期迭代
+
+- **每月末**：运行 Lint 检查，更新归档状态
+- **写新博客**：确保所有必填字段完整，related_blogs ≥2 个
+- **创建 Wiki 页面**：确保 wikilinks ≥2 个
+
+---
+
+## 工具
 
 ```bash
-# 1. 创建目录结构（已创建）
-mkdir -p wiki/{raw/articles,raw/papers,entities,concepts,comparisons,queries}
+# Lint 检查（孤立页面、断链、过时）
+python3 ~/.hermes/skills/wikilinks/scripts/wikilinks.py --lint
 
-# 2. 读取 SCHEMA.md + index.md + log.md
-# 3. 使用 Wiki
+# 召回博客摘要
+python3 ~/.hermes/skills/wikilinks/scripts/wikilinks.py --list
+
+# 召回内容中的 wikilinks
+python3 ~/.hermes/skills/wikilinks/scripts/wikilinks.py "内容..."
 ```
-
----
-
-## Wiki vs Memory 工具使用建议
-
-- **Memory 工具**：适合临时、快速存取（如本次会话的TODO）
-- **Wiki**：适合长期、累积、有结构的信息
-
-**建议**：两者配合使用。临时信息用 memory，长期知识用 wiki。
