@@ -27,7 +27,6 @@
 | 页面 | 标签 | 简介 |
 |------|------|------|
 | WIKI_GUIDE | knowledge, wiki | Wiki 系统使用指南 |
-| smallcode | tech, project, comparison | SmallCode—针对小参数模型(8B-35B)的 AI 编程助手，8 大优化技巧解析 |
 
 ### comparisons/
 

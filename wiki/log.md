@@ -45,3 +45,9 @@
 - [create] concepts/smallcode.md — 深度分析 SmallCode 项目：小模型编程助手的 8 大优化技巧、架构分析、与 Hermes 对比
 - [update] index.md — 添加 smallcode 条目到 concepts 章节
 - [update] wiki/log.md — 记录本次分析入库
+## 2026-06-16
+
+### 清理（克鲁斯执行）
+
+- [delete] concepts/smallcode.md — 移除 SmallCode 分析页面（产品不成熟，已卸载）
+- [update] index.md — 移除 smallcode 条目
