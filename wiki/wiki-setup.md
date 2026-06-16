@@ -2,15 +2,13 @@
 
 > 本文档记录 LLM Wiki 从零开始配置的完整步骤。
 > 基于 Karpathy's LLM Wiki 模式构建。
-> 迁移说明（2026-05-19）：本文原属 Hermes-Doc 旧路径配置指南，保留作历史参考。当前统一 canonical wiki 路径为 `/Users/lvyun/.hermes/wiki`，`WIKI_PATH` 也应指向该路径。
-
 
 ## 配置概述
 
 | 项目 | 值 |
 |------|-----|
 | 域名 | Hermes Agent Knowledge |
-| 路径 | `/Users/lvyun/.hermes/wiki` |
+| 路径 | `/Users/lvyun/TianCe-Lab/Hermes-Doc/wiki` |
 | 环境变量 | `WIKI_PATH` |
 
 ---
@@ -128,17 +126,13 @@ sources: [raw/xxx.md]  # 可选
 
 ```bash
 # LLM Wiki路径
-WIKI_PATH=/Users/lvyun/.hermes/wiki
+WIKI_PATH=/Users/lvyun/TianCe-Lab/Hermes-Doc/wiki
 ```
 
 ### Step 7: 创建符号链接 (可选)
 
-当前 canonical 路径已经是 `~/.hermes/wiki`，不需要再创建符号链接。
-
-如果未来选择把 wiki 放回项目仓库目录，再使用：
-
 ```bash
-ln -sfn /path/to/canonical/wiki ~/.hermes/wiki
+ln -sf /Users/lvyun/TianCe-Lab/Hermes-Doc/wiki ~/.hermes/wiki
 ```
 
 ---

@@ -124,9 +124,8 @@ hermes mcp test microsandbox
 
 先 **方案 A** 快速验证 sandbox 可用，再决定是否升级到 **方案 B**。
 
-**2026-05 更新：MCP Server 已落地（有限功能）**
-- NUC 上运行 Docker 容器化 microsandbox-mcp（端口 8912，StreamableHTTP 协议）
-- Hermes 通过 config.yaml 注册为 MCP 工具
-- **但 sandbox_create 不支持 --network-policy、-p、-v 等高级参数**
-- 需要网络/端口的沙箱操作走 SSH 直调 msb CLI
-- 详见 [[references/microsandbox-handbook#五mcp-server]]
+整体步骤：
+1. 修复 KVM 权限 → 验证 `msb run` 正常工作
+2. SSH 调用 msb 测试（Hermes 直接执行）
+3. （可选）部署 MCP Server 做原生集成
+4. 记录操作范例到 Hermes-Doc wiki

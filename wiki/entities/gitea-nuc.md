@@ -21,20 +21,6 @@
 
 ## Git 操作（SSH 协议）
 
-### 推荐方式：SSH Host 别名（已配置）
-
-~/.ssh/config 中已配置 `gitea-nuc` Host，直接用：
-
-```bash
-# 克隆（无需指定端口和用户）
-git clone gitea-nuc:lvyun/仓库名.git
-
-# 已有仓库添加 remote
-git remote add nuc gitea-nuc:lvyun/仓库名.git
-```
-
-### 原始方式（无 SSH config 时）
-
 ```bash
 # 克隆（关键：必须指定 SSH 端口 3022）
 GIT_SSH_COMMAND="ssh -p 3022" git clone ssh://git@192.168.3.20:2222/lvyun/仓库名.git
@@ -44,11 +30,11 @@ git remote add nuc ssh://git@192.168.3.20:2222/lvyun/仓库名.git
 GIT_SSH_COMMAND="ssh -p 3022" git push nuc main
 ```
 
-**陷阱**：Gitea 返回的 SSH URL 是容器内端口 2222，外部必须用 3022。
+**陷阱**：Gitea 返回的 SSH URL 是容器内端口 2222，外部必须用 3022。`GIT_SSH_COMMAND="ssh -p 3022"` 会强制走主机端口。
 
 **验证 SSH 连通性**：
 ```bash
-ssh gitea-nuc
+ssh -p 3022 git@192.168.3.20
 # 返回：Hi there, lvyun! You've successfully authenticated...
 ```
 

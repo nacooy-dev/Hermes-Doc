@@ -54,3 +54,4 @@ blog-post-draft.md
 tmp/
 temp/
 *.tmp
+.worktrees/
